@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/mada_app/static/css/main.e1bbf1a5.chunk.css",
+    "main.js": "/mada_app/static/js/main.eb3ff61a.chunk.js",
+    "main.js.map": "/mada_app/static/js/main.eb3ff61a.chunk.js.map",
+    "runtime-main.js": "/mada_app/static/js/runtime-main.a1d00546.js",
+    "runtime-main.js.map": "/mada_app/static/js/runtime-main.a1d00546.js.map",
+    "static/css/2.84a2c760.chunk.css": "/mada_app/static/css/2.84a2c760.chunk.css",
+    "static/js/2.531a1a9e.chunk.js": "/mada_app/static/js/2.531a1a9e.chunk.js",
+    "static/js/2.531a1a9e.chunk.js.map": "/mada_app/static/js/2.531a1a9e.chunk.js.map",
+    "index.html": "/mada_app/index.html",
+    "precache-manifest.bb2a5cb904147f89d6c04f4d10b84e05.js": "/mada_app/precache-manifest.bb2a5cb904147f89d6c04f4d10b84e05.js",
+    "service-worker.js": "/mada_app/service-worker.js",
+    "static/css/2.84a2c760.chunk.css.map": "/mada_app/static/css/2.84a2c760.chunk.css.map",
+    "static/css/main.e1bbf1a5.chunk.css.map": "/mada_app/static/css/main.e1bbf1a5.chunk.css.map",
+    "static/js/2.531a1a9e.chunk.js.LICENSE.txt": "/mada_app/static/js/2.531a1a9e.chunk.js.LICENSE.txt",
+    "static/media/sound.mp3": "/mada_app/static/media/sound.b1ec5d58.mp3"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a1d00546.js",
+    "static/css/2.84a2c760.chunk.css",
+    "static/js/2.531a1a9e.chunk.js",
+    "static/css/main.e1bbf1a5.chunk.css",
+    "static/js/main.eb3ff61a.chunk.js"
+  ]
+}
