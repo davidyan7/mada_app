@@ -27,7 +27,7 @@ function App() {
         </div>
       </nav>
       <header className="header1">
-      <div className="header-container">
+      <div className="text-white header-container">
             <h2>מסך התרעות ירי טילים (ארצי)</h2>
       </div>
       </header>

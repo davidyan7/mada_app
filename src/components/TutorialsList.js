@@ -2,12 +2,17 @@ import React, { useState ,useEffect } from "react";
 import { useList } from "react-firebase-hooks/database";
 import CitiesDataService from "../services/CitiesService";
 import CitiesWasService from "../services/CitiesWasAlertService";
+import alarm from "../assets/sound.mp3"
 import Tutorial from "./Tutorial";
 
 const TutorialsList = () => {
   // const [tutorials, setTutorials] = useState([]);
   const [currentTutorial, setCurrentTutorial] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [checkIndex, setCheckIndex] = useState(0);
+  const [alarmAudio, setAudio] = useState( new Audio(alarm) )
+  const [isPlay, setPlay] = useState(false)
+  
 
   /* use react-firebase-hooks */
   const [tutorials, loading, error] = useList(CitiesDataService.getAll());
@@ -23,19 +28,36 @@ const TutorialsList = () => {
         console.log(e);
       });
   };
+
+
+  const getColor=(num)=>{
+    if (num < 31) return "list-group-item-danger"
+    return "list-group-item-warning"
+  }
   
   useEffect(() => {
-    // if (tutorials)return
-    // tutorials.forEach(element => {
-    //   setTimeout((element) => {
-    //     deleteTutorial(element.ref_.key)
-    //   }, element.ref_.countdown*1000);
-    // });
+    // if (isMute) return
+    console.log(tutorials.length,"tutorials.length,");
+    console.log(checkIndex,"checkIndex");
+    // eslint-disable-next-line no-unused-expressions
+    if (tutorials.length === 0) return
+    if (checkIndex >= tutorials.length) return
+    if (tutorials.length >0){
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+      var nopromise = {
+        // eslint-disable-next-line no-new-func
+        catch : new Function()
+      };
+      (alarmAudio.play() || nopromise).catch(function(){}); ;
+    }
+      
+    
+    setCheckIndex(tutorials.length)
+    
     tutorials.map((tutorial, index) => {
       const city = tutorial.val()
       setTimeout(() => {
-
-        CitiesWasService.create(city)
         deleteTutorial(tutorial.key)
       }, city.countdown*1000);
    })
@@ -43,32 +65,6 @@ const TutorialsList = () => {
   }, [tutorials,deleteTutorial])
   
 
-  /* manually listen for value events
-  const onDataChange = (items) => {
-    let tutorials = [];
-
-    items.forEach((item) => {
-      let key = item.key;
-      let data = item.val();
-      tutorials.push({
-        key: key,
-        title: data.title,
-        description: data.description,
-        published: data.published,
-      });
-    });
-
-    setTutorials(tutorials);
-  };
-
-  useEffect(() => {
-    TutorialDataService.getAll().on("value", onDataChange);
-
-    return () => {
-      TutorialDataService.getAll().off("value", onDataChange);
-    };
-  }, []);
-  */
 
   const refreshList = () => {
     setCurrentTutorial(null);
@@ -112,9 +108,7 @@ const TutorialsList = () => {
             tutorials &&
             tutorials.map((tutorial, index) => (
               <li
-                className={"list-group-item " + (index === currentIndex ? "active" : "")}
-                onClick={() => setActiveTutorial(tutorial, index)}
-                key={index}
+              className={`text-dark list-group-item " ${getColor(tutorial.val().countdown)} `}                key={index}
               >
                 {tutorial.val().name}
                 {/* tutorial.title */}
@@ -125,12 +119,17 @@ const TutorialsList = () => {
       <div className="main2">
         <h2>ארכיון</h2>
         <ul className="list-group">
+        <button
+          className="m-3 btn btn-sm btn-danger"
+          onClick={removeAllTutorials}
+        >
+          Remove All
+        </button>
         {!loading &&
             cityWasAlert &&
             cityWasAlert.map((tutorial, index) => (
               <li
-                className={"list-group-item " + (index === currentIndex ? "active" : "")}
-                onClick={() => setActiveTutorial(tutorial, index)}
+                className={`text-dark list-group-item " ${getColor(tutorial.val().countdown)} `}
                 key={index}
               >
                 {tutorial.val().name}
@@ -144,12 +143,7 @@ const TutorialsList = () => {
 
         
 
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllTutorials}
-        >
-          Remove All
-        </button>
+     
       </div>
       
     </div>

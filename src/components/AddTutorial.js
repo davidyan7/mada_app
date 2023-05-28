@@ -1,5 +1,6 @@
 import React, { useState ,useEffect} from "react";
 import CitiesDataService from "../services/CitiesService";
+import CitiesWasService from "../services/CitiesWasAlertService";
 import { Search } from "./search";
 import alarm from "../assets/sound.mp3"
 var cities = require('../services/citiesArchive.json')
@@ -42,27 +43,26 @@ const AddTutorial = () => {
   };
 
   useEffect(() => {
-    console.log(citiesToAlert);
   
   }, [citiesToAlert])
   
 
   const saveTutorial = (data) => {
-    console.log(alarmAudio);
-    alarmAudio.pause();
-    alarmAudio.currentTime = 0;
-    alarmAudio.play();
+    
     citiesToAlert.forEach(element => {
-      
+      setTimeout(() => {
+        CitiesWasService.create(element)
+      }, element.countdown*1000);
       CitiesDataService.create(element)
         .then(() => {
           setSubmitted(true);
-          setcitiesToAlert([])
         })
         .catch(e => {
           console.log(e);
         });
+        
     });
+    setcitiesToAlert([])
   };
   
 
