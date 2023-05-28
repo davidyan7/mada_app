@@ -1,0 +1,107 @@
+import React, { useState ,useEffect} from "react";
+import CitiesDataService from "../services/CitiesService";
+import { Search } from "./search";
+import alarm from "../assets/sound.mp3"
+var cities = require('../services/citiesArchive.json')
+
+
+
+const AddTutorial = () => {
+  const initialTutorialState = {
+     key: null,
+    published: false,
+    id:"",
+    name: "",
+    name_en: "",
+    zone: "",
+    zone_en: "",
+    time: "",
+    time_en: "",
+    countdown: 0,
+    lat: 0,
+    lng: 0,
+    value: ""
+  };
+  const [tutorial, setTutorial] = useState(initialTutorialState);
+  const [submitted, setSubmitted] = useState(false);
+  const [citiesToAlert, setcitiesToAlert] = useState([]);
+  // const alarmAudio = new Audio(alarm);
+  const [alarmAudio, setAudio] = useState( new Audio(alarm) )
+
+  const handleMessageFromChild = (newCityToAlert) => {
+    newCityToAlert.id = Math.random(100000000)
+    // saveTutorial(newCityToAlert)
+    setTimeout(() => {
+      
+    }, newCityToAlert.countdown*1000);
+    setcitiesToAlert([...citiesToAlert, newCityToAlert]);
+  }
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setTutorial({ ...tutorial, [name]: value });
+  };
+
+  useEffect(() => {
+    console.log(citiesToAlert);
+  
+  }, [citiesToAlert])
+  
+
+  const saveTutorial = (data) => {
+    console.log(alarmAudio);
+    alarmAudio.pause();
+    alarmAudio.currentTime = 0;
+    alarmAudio.play();
+    citiesToAlert.forEach(element => {
+      
+      CitiesDataService.create(element)
+        .then(() => {
+          setSubmitted(true);
+          setcitiesToAlert([])
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    });
+  };
+  
+
+  const newTutorial = () => {
+    setTutorial(initialTutorialState);
+    setSubmitted(false);
+  };
+
+  const deleteCity = (city) => {
+    const idx = citiesToAlert.findIndex(e => city.id === e.id)
+    citiesToAlert.splice(idx,1)
+    setcitiesToAlert([...citiesToAlert])
+  }
+
+  return (
+    <div className="about">
+      <div className="main2">
+        <Search citiesToAlert={handleMessageFromChild} data={cities} className="main1" />
+      </div>
+      <div className="main1">
+        <h2>רשימת ערים להפעלה</h2>
+        <ul className="list-group">
+        {
+            citiesToAlert &&
+            citiesToAlert.map((city, index) => (
+              <li key={index}>
+                {city.name}
+                <button onClick={() => deleteCity(city)}>מחק</button>
+
+                {/* tutorial.title */}
+              </li>
+            ))}
+          <button onClick={saveTutorial} className="btn btn-success">
+            Submit
+          </button>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default AddTutorial;

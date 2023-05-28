@@ -1,0 +1,123 @@
+.container h2 {
+  text-align: center;
+  margin: 25px auto;
+}
+
+.list {
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
+
+.submit-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.edit-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.header1 {
+
+  padding: 10px;
+  background-color: rgb(38, 77, 251);
+  width: 100%;
+   
+}
+.header-container {
+ text-align: right;
+ padding: 0;
+}
+
+.about {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 30px;
+  gap: 30px;
+  text-align: center;
+  height: 90vh;
+  
+  h2{
+      color: black;
+  }
+  
+ 
+}
+.main1{
+  border: 2px solid rgb(208, 208, 208);
+width: 70%;
+}
+
+.main2{
+  border: 2px solid rgb(208, 208, 208);
+  width: 30%;
+  }
+
+.check{
+  text-align: right;
+ 
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+}    
+.main3{
+  border: 2px solid rgb(208, 208, 208);
+  width: 70%;
+  color: black;
+  textarea:focus, input:focus {
+      color: #000000;
+      background-color: rgb(150, 150, 150);
+  }
+  
+  input, select, textarea{
+      color: #000;
+  }
+
+ul{
+  /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+}
+.li_main{
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
+.time_input{
+  border: 2px solid rgb(208, 208, 208);
+  display: flex;
+}
+
+.btn-contanier{
+  display: flex;
+}
+}
+
+.city-list{
+  position: absolute;
+}
+input{
+  text-align: right;
+}
