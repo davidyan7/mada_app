@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState ,useEffect } from "react";
 import { useList } from "react-firebase-hooks/database";
 import CitiesDataService from "../services/CitiesService";
 import CitiesWasService from "../services/CitiesWasAlertService";
 import alarm from "../assets/sound.mp3"
-import Tutorial from "./Tutorial";
 
 const TutorialsList = () => {
   // const [tutorials, setTutorials] = useState([]);
@@ -11,7 +11,6 @@ const TutorialsList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [checkIndex, setCheckIndex] = useState(0);
   const [alarmAudio, setAudio] = useState( new Audio(alarm) )
-  const [isPlay, setPlay] = useState(false)
   
 
   /* use react-firebase-hooks */
@@ -36,11 +35,12 @@ const TutorialsList = () => {
   }
   
   useEffect(() => {
-    // if (isMute) return
-    console.log(tutorials.length,"tutorials.length,");
-    console.log(checkIndex,"checkIndex");
     // eslint-disable-next-line no-unused-expressions
-    if (tutorials.length === 0) return
+    if (tutorials.length === 0) {
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+      return
+    }
     if (checkIndex >= tutorials.length) return
     if (tutorials.length >0){
       alarmAudio.pause();
@@ -55,14 +55,15 @@ const TutorialsList = () => {
     
     setCheckIndex(tutorials.length)
     
-    tutorials.map((tutorial, index) => {
+    // eslint-disable-next-line array-callback-return
+    tutorials.map((tutorial) => {
       const city = tutorial.val()
       setTimeout(() => {
         deleteTutorial(tutorial.key)
       }, city.countdown*1000);
    })
   
-  }, [tutorials,deleteTutorial])
+  }, [tutorials, deleteTutorial, checkIndex, alarmAudio])
   
 
 
@@ -71,23 +72,13 @@ const TutorialsList = () => {
     setCurrentIndex(-1);
   };
 
-  const setActiveTutorial = (tutorial, index) => {
-    const { title, description, published } = tutorial.val(); /* tutorial */
-
-    setCurrentTutorial({
-      key: tutorial.key,
-      title,
-      description,
-      published,
-    });
-
-    setCurrentIndex(index);
-  };
-
   const removeAllTutorials = () => {
     CitiesWasService.removeAll()
+    CitiesDataService.removeAll()
       .then(() => {
-        refreshList();
+        // refreshList();
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
       })
       .catch((e) => {
         console.log(e);

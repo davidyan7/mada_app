@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState ,useEffect} from "react";
 import CitiesDataService from "../services/CitiesService";
 import CitiesWasService from "../services/CitiesWasAlertService";
 import { Search } from "./search";
-import alarm from "../assets/sound.mp3"
 var cities = require('../services/citiesArchive.json')
 
 
@@ -26,8 +26,6 @@ const AddTutorial = () => {
   const [tutorial, setTutorial] = useState(initialTutorialState);
   const [submitted, setSubmitted] = useState(false);
   const [citiesToAlert, setcitiesToAlert] = useState([]);
-  // const alarmAudio = new Audio(alarm);
-  const [alarmAudio, setAudio] = useState( new Audio(alarm) )
 
   const handleMessageFromChild = (newCityToAlert) => {
     newCityToAlert.id = Math.random(100000000)
@@ -64,12 +62,7 @@ const AddTutorial = () => {
     });
     setcitiesToAlert([])
   };
-  
 
-  const newTutorial = () => {
-    setTutorial(initialTutorialState);
-    setSubmitted(false);
-  };
 
   const deleteCity = (city) => {
     const idx = citiesToAlert.findIndex(e => city.id === e.id)
