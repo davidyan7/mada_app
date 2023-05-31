@@ -3,7 +3,9 @@ import React, { useState ,useEffect} from "react";
 import CitiesDataService from "../services/CitiesService";
 import CitiesWasService from "../services/CitiesWasAlertService";
 import { Search } from "./search";
+import trashIcon from "../assets/trash.svg"
 var cities = require('../services/citiesArchive.json')
+
 
 
 
@@ -81,14 +83,17 @@ const AddTutorial = () => {
         {
             citiesToAlert &&
             citiesToAlert.map((city, index) => (
-              <li key={index}>
-                {city.name}
-                <button onClick={() => deleteCity(city)}>מחק</button>
-
+              <li   className="text-dark list-group-item"
+               key={index}>
+                <div style={{width: '100%'}} className="d-flex justify-content-between">
+                   <img className="ml-5 btn btn-light" onClick={() => deleteCity(city)} src={trashIcon}></img>
+                 {city.name}
+                </div>
+                
                 {/* tutorial.title */}
               </li>
             ))}
-          <button onClick={saveTutorial} className="btn btn-success">
+          <button onClick={saveTutorial} className="btn btn-success ">
             Submit
           </button>
         </ul>

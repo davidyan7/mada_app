@@ -1,15 +1,15 @@
 [
     {
-      "name": "בחר הכל",
+      "name": " בדיקה",
       "name_en": "Select All",
       "zone": "",
       "zone_en": "",
       "time": "all",
       "time_en": "",
-      "countdown": 0,
+      "countdown": 23,
       "lat": 0,
       "lng": 0,
-      "value": "all"
+      "value": "בדיקה"
     },
     {
       "name": "אבו סנאן",

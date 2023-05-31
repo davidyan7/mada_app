@@ -31,7 +31,7 @@ export const Search = (props) => {
           <p>Coordinates: {selectedItem.lat}, {selectedItem.lng}</p>
         </div>
       )} */}
-      <ul>
+      <ul className="list-group">
         {filteredData.map((item) => (
           <li key={item.value} onClick={() => handleItemClick(item)}>
             {item.name}

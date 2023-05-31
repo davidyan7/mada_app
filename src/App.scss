@@ -37,7 +37,7 @@
   padding: 30px;
   gap: 30px;
   text-align: center;
-  height: 90vh;
+  height: inherit;
   
   h2{
       color: black;
@@ -63,6 +63,10 @@ width: 70%;
     margin: 0;
     padding: 0;
     text-align: right;
+  }
+  li:hover {
+    background-color: rgb(203, 203, 203);
+    cursor: pointer;
   }
 }    
 .main3{
@@ -121,4 +125,14 @@ ul{
 }
 input{
   text-align: right;
+  width: 100%;
+}
+
+.list-group{
+  min-height: 70vh;
+  max-height: 70vh;
+  margin-bottom: 10px;
+  overflow:scroll;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: unset;
 }

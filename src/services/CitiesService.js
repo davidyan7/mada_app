@@ -34,4 +34,5 @@ export default {
   remove,
   removeAll,
   removeById,
+  db
 };

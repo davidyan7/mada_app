@@ -4,6 +4,9 @@ import { useList } from "react-firebase-hooks/database";
 import CitiesDataService from "../services/CitiesService";
 import CitiesWasService from "../services/CitiesWasAlertService";
 import alarm from "../assets/sound.mp3"
+import {useFirebaseList} from 'react-firebase-hooks/database'
+import firebase from "../firebase";
+
 
 const TutorialsList = () => {
   // const [tutorials, setTutorials] = useState([]);
@@ -11,11 +14,62 @@ const TutorialsList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [checkIndex, setCheckIndex] = useState(0);
   const [alarmAudio, setAudio] = useState( new Audio(alarm) )
+  const [timers,setTimers] = useState({});
+  const [timersIds,setTimersIds] = useState([]);
+  
   
 
   /* use react-firebase-hooks */
   const [tutorials, loading, error] = useList(CitiesDataService.getAll());
   const [cityWasAlert] = useList(CitiesWasService.getAll());
+  // const [tutorials, loading, error] = useList(dbRef.orderByKey()) 
+  
+
+  useEffect(() => {
+    const handleChildAdded = (snapshot, previousKey) => {
+      const addedItem = {
+        key: snapshot.key,
+        value: snapshot.val(),
+      };
+
+
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+      var nopromise = {
+        // eslint-disable-next-line no-new-func
+        catch : new Function()
+      };
+      (alarmAudio.play() || nopromise).catch(function(){});
+
+      const timerId = setTimeout(() => {
+        deleteTutorial(addedItem.key)
+        delete timers[addedItem.key]
+      }, addedItem.value.countdown*1000);
+      // const itemKey = addedItem.key
+      // const newTimer = {[addedItem.key]:timerId} 
+      setTimersIds([...timersIds, timerId])
+      // Trigger your logic for when an item is added
+    };
+  
+    const handleChildRemoved = (snapshot) => {
+      const removedItem = {
+        key: snapshot.key,
+        value: snapshot.val(),
+      };
+      if (tutorials.length === 0) {
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+      }
+      };
+    CitiesDataService.db.on('child_added', handleChildAdded);
+    CitiesDataService.db.on('child_removed', handleChildRemoved);
+
+    return () => {
+      CitiesDataService.db.off('child_added', handleChildAdded);
+      CitiesDataService.db.off('child_removed', handleChildRemoved);
+    };
+  }, []);
+    
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const deleteTutorial = (key) => {
@@ -30,53 +84,25 @@ const TutorialsList = () => {
 
 
   const getColor=(num)=>{
+    if (num === 23) return "list-group-item-success"
     if (num < 31) return "list-group-item-danger"
     return "list-group-item-warning"
   }
-  
-  useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    if (tutorials.length === 0) {
-      alarmAudio.pause();
-      alarmAudio.currentTime = 0;
-      return
-    }
-    if (checkIndex >= tutorials.length) return
-    if (tutorials.length >0){
-      alarmAudio.pause();
-      alarmAudio.currentTime = 0;
-      var nopromise = {
-        // eslint-disable-next-line no-new-func
-        catch : new Function()
-      };
-      (alarmAudio.play() || nopromise).catch(function(){}); ;
-    }
-      
-    
-    setCheckIndex(tutorials.length)
-    
-    // eslint-disable-next-line array-callback-return
-    tutorials.map((tutorial) => {
-      const city = tutorial.val()
-      setTimeout(() => {
-        deleteTutorial(tutorial.key)
-      }, city.countdown*1000);
-   })
-  
-  }, [tutorials, deleteTutorial, checkIndex, alarmAudio])
-  
-
-
   const refreshList = () => {
     setCurrentTutorial(null);
     setCurrentIndex(-1);
   };
 
   const removeAllTutorials = () => {
+      timersIds.forEach((timer)=>{
+      clearTimeout(timer)
+    })
+
+
     CitiesWasService.removeAll()
-    CitiesDataService.removeAll()
-      .then(() => {
-        // refreshList();
+    .then(() => {
+      // refreshList();
+      
         alarmAudio.pause();
         alarmAudio.currentTime = 0;
       })
